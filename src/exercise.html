@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <link rel="stylesheet" href="pico.min.css" />
+<script>
+function displayImage(canvasName, encoding) {
+  console.log(canvasName);
+  console.log(encoding);
+  if (encoding == undefined) {
+    encoding = document.getElementById('encoding').value.toUpperCase();
+  }
+  const canvas = document.getElementById(canvasName);
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "red";
+  const px = 6;
+  const py = 6;
+  const psize = 40;
+  const showGrid = true;
+  const coding = encoding;
+
+  let colorMap = {"A": "", "B":"", "C":"", "D":"", "E":"", "F":""};
+
+  for (let code of Object.keys(colorMap)) {
+    let cId = 'color'+code;
+    let color = document.getElementById(cId);
+    colorMap[code] = color.value;
+  }
+
+  canvas.setAttribute("width", px*psize);
+  canvas.setAttribute("height", py*psize);
+  if (coding.length < px*py) {
+    const ad = document.getElementById('answer');
+    ad.innerHTML = `Ich erwarte für jedes Pixel einen Farbwert. Das Bild soll aus ${px}x${py}, also ${px*py} Pixeln bestehen. Angegeben hast du aber nur ${coding.length} Pixel.`;
+
+  }
+for (let i=0; i < px; i++) {
+  for(let j=0; j < py; j++) {
+    let idx = i+j*px;
+    let c = getColor(colorMap, coding.charAt(idx));
+    ctx.fillStyle = c;
+    ctx.fillRect(i*psize,j*psize,psize,psize);
+  }
+}
+if (showGrid) {
+  for (let i=1; i < px; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i*psize,0);
+    ctx.lineTo(i*psize, py*psize);
+    ctx.stroke();
+  }
+  for (let j=1; j < py; j++) {
+    ctx.beginPath();
+    ctx.moveTo(0,j*psize,);
+    ctx.lineTo(px*psize, j*psize);
+    ctx.stroke();
+  }
+}
+}
+
+function getColor(map,c) {
+  const color = map[c];
+  if (color == null) {
+    return "black";
+  }
+  return color;
+}
+document.addEventListener("DOMContentLoaded", (event) => {
+  displayImage('myCanvas');  
+  displayImage('targetCanvas', 'AACCAAACCCCACCFFCCCCFFCCACCCCAAACCAA');
+});
+// BBBBBBBBBBRRRRBBBBYYYYBBGGYYYYGGGGYYYYGGGGGGGGGG
+// Mario: WWWWWWWWWWWWWWWWWWWWWRRRRWWWWWWWWWWWRRRRRRRRWWWWWWWWSSSOOSOWWWWWWWWSOSOOOSOOOWWWWWWSOSSOOOSOOOWWWWWWSOOOOSSSSWWWWWWWWOOOOOOWWWWWWWWWBBRBBRWWWWWWWWWBBBRBBRBBWWWWWWBBBBRBBRBBBWWWWWOOBBRRRRBBOOWWWWOOORYRRYROOOWWWWWWRRRWWRRRWWWWWWWSSSWWWWSSSWWWWWSSSSWWWWSSSSWW
+</script>
+</head>
+<body>
+<main>
+<details>
+<summary>Farbtabelle</summary>
+<table>
+<tr>
+  <td>A</td>
+  <td>B</td>
+  <td>C</td>
+  <td>D</td>
+  <td>E</td>
+  <td>F</td>
+</tr>
+<tr>
+<td>
+  <input type="color" id="colorA" value="#ff0000">
+</td>
+<td>
+  <input type="color" id="colorB" value="#00ff00">
+</td>
+<td>
+<input type="color" id="colorC" value="#0000ff">
+</td>
+<td>
+<input type="color" id="colorD" value="#ffffff">
+</td>
+<td>
+<input type="color" id="colorE" value="#000000">
+</td>
+<td>
+<input type="color" id="colorF" value="#ffff00">
+</td>
+</tr>
+</table>
+</details>
+<textarea name="encoding" id="encoding">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</textarea>
+<small>Darstellung des Bildes</small>
+<button onClick="displayImage('myCanvas')">Aktualisieren</button>
+<div id="answer"> </div>
+<div class="grid">
+<div>
+<canvas id="myCanvas" width="400" height="200" style="border:1px solid black;">
+</div>
+<div>
+<canvas id="targetCanvas" width="400" height="200" style="border:1px solid black;">
+</canvas>
+</div>
+</div>
+</main>
+</body>
+</html>
