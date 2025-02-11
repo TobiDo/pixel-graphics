@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <link rel="stylesheet" href="pico.min.css" />
+<script>
+function displayImage() {
+  const res = document.getElementById('encoding').value.toUpperCase();
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+ctx.fillStyle = "red";
+const px = 16;
+const py = 16;
+const psize = 40;
+const showGrid = true;
+const coding = res;
+
+let colorMap = {"A": "", "B":"", "C":"", "D":"", "E":"", "F":""};
+
+for (let code of Object.keys(colorMap)) {
+  let cId = 'color'+code;
+  let color = document.getElementById(cId);
+  colorMap[code] = color.value;
+}
+console.log(colorMap);
+
+canvas.setAttribute("width", px*psize);
+canvas.setAttribute("height", py*psize);
+if (coding.length < px*py) {
+  const ad = document.getElementById('answer');
+  console.log(ad);
+  ad.innerHTML = `Ich erwarte für jedes Pixel einen Farbwert. Das Bild soll aus ${px}x${py}, also ${px*py} Pixeln bestehen. Angegeben hast du aber nur ${res.length} Pixel.`;
+
+}
+for (let i=0; i < px; i++) {
+  for(let j=0; j < py; j++) {
+    let idx = i+j*px;
+    let c = getColor(colorMap, coding.charAt(idx));
+    ctx.fillStyle = c;
+    ctx.fillRect(i*psize,j*psize,psize,psize);
+  }
+}
+if (showGrid) {
+  for (let i=1; i < px; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i*psize,0);
+    ctx.lineTo(i*psize, py*psize);
+    ctx.stroke();
+  }
+  for (let j=1; j < py; j++) {
+    ctx.beginPath();
+    ctx.moveTo(0,j*psize,);
+    ctx.lineTo(px*psize, j*psize);
+    ctx.stroke();
+  }
+}
+}
+
+function getColor(map,c) {
+  const color = map[c];
+  if (color == null) {
+    return "black";
+  }
+  return color;
+}
+// BBBBBBBBBBRRRRBBBBYYYYBBGGYYYYGGGGYYYYGGGGGGGGGG
+// Mario: WWWWWWWWWWWWWWWWWWWWWRRRRWWWWWWWWWWWRRRRRRRRWWWWWWWWSSSOOSOWWWWWWWWSOSOOOSOOOWWWWWWSOSSOOOSOOOWWWWWWSOOOOSSSSWWWWWWWWOOOOOOWWWWWWWWWBBRBBRWWWWWWWWWBBBRBBRBBWWWWWWBBBBRBBRBBBWWWWWOOBBRRRRBBOOWWWWOOORYRRYROOOWWWWWWRRRWWRRRWWWWWWWSSSWWWWSSSWWWWWSSSSWWWWSSSSWW
+</script>
+</head>
+<body>
+<main>
+<h3>Farbtabelle</h3>
+<details>
+<summary>Farbtabelle</summary>
+<table>
+<tr>
+  <td>A</td>
+  <td>B</td>
+  <td>C</td>
+  <td>D</td>
+  <td>E</td>
+  <td>F</td>
+</tr>
+<tr>
+<td>
+  <input type="color" id="colorA" value="#ff0000">
+</td>
+<td>
+  <input type="color" id="colorB" value="#ff0000">
+</td>
+<td>
+<input type="color" id="colorC" value="#ff0000">
+</td>
+<td>
+<input type="color" id="colorD" value="#ff0000">
+</td>
+<td>
+<input type="color" id="colorE" value="#ff0000">
+</td>
+<td>
+<input type="color" id="colorF" value="#ff0000">
+</td>
+</tr>
+</table>
+</details>
+<textarea name="encoding" id="encoding" > </textarea>
+<button onClick="displayImage()">Anzeigen</button>
+<div id="answer"> </div>
+<canvas id="myCanvas" width="400" height="200" style="border:1px solid black;">
+</canvas>
+</main>
+</body>
+</html>
