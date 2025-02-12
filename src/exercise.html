@@ -29,10 +29,12 @@ function displayImage(canvasName, encoding) {
 
   canvas.setAttribute("width", px*psize);
   canvas.setAttribute("height", py*psize);
+  const ad = document.getElementById('answer');
   if (coding.length < px*py) {
-    const ad = document.getElementById('answer');
     ad.innerHTML = `Ich erwarte für jedes Pixel einen Farbwert. Das Bild soll aus ${px}x${py}, also ${px*py} Pixeln bestehen. Angegeben hast du aber nur ${coding.length} Pixel.`;
-
+  }
+  else {
+    ad.innerHTML = ``;
   }
 for (let i=0; i < px; i++) {
   for(let j=0; j < py; j++) {
@@ -111,7 +113,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 <textarea name="encoding" id="encoding">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</textarea>
 <small>Darstellung des Bildes</small>
 <button onClick="displayImage('myCanvas')">Aktualisieren</button>
-<div id="answer"> </div>
 <div class="grid">
 <div>
 <canvas id="myCanvas" width="400" height="200" style="border:1px solid black;">
@@ -121,6 +122,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 </canvas>
 </div>
 </div>
+<article id="answer">  </article>
 </main>
 </body>
 </html>
