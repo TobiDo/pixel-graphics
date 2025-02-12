@@ -15,7 +15,7 @@ const psize = 40;
 const showGrid = true;
 const coding = res;
 
-let colorMap = {"A": "", "B":"", "C":"", "D":"", "E":"", "F":""};
+let colorMap = {"R": "", "W":"", "B":"", "G":"", "L":"", "P":""};
 
 for (let code of Object.keys(colorMap)) {
   let cId = 'color'+code;
@@ -26,12 +26,13 @@ console.log(colorMap);
 
 canvas.setAttribute("width", px*psize);
 canvas.setAttribute("height", py*psize);
-if (coding.length < px*py) {
   const ad = document.getElementById('answer');
-  console.log(ad);
-  ad.innerHTML = `Ich erwarte für jedes Pixel einen Farbwert. Das Bild soll aus ${px}x${py}, also ${px*py} Pixeln bestehen. Angegeben hast du aber nur ${res.length} Pixel.`;
-
-}
+  if (coding.length < px*py) {
+    ad.innerHTML = `Ich erwarte für jedes Pixel einen Farbwert. Das Bild soll aus ${px}x${py}, also ${px*py} Pixeln bestehen. Angegeben hast du aber nur ${coding.length} Pixel.`;
+  }
+  else {
+    ad.innerHTML = ``;
+  }
 for (let i=0; i < px; i++) {
   for(let j=0; j < py; j++) {
     let idx = i+j*px;
@@ -63,6 +64,9 @@ function getColor(map,c) {
   }
   return color;
 }
+document.addEventListener("DOMContentLoaded", (event) => {
+  displayImage();  
+});
 // BBBBBBBBBBRRRRBBBBYYYYBBGGYYYYGGGGYYYYGGGGGGGGGG
 // Mario: WWWWWWWWWWWWWWWWWWWWWRRRRWWWWWWWWWWWRRRRRRRRWWWWWWWWSSSOOSOWWWWWWWWSOSOOOSOOOWWWWWWSOSSOOOSOOOWWWWWWSOOOOSSSSWWWWWWWWOOOOOOWWWWWWWWWBBRBBRWWWWWWWWWBBBRBBRBBWWWWWWBBBBRBBRBBBWWWWWOOBBRRRRBBOOWWWWOOORYRRYROOOWWWWWWRRRWWRRRWWWWWWWSSSWWWWSSSWWWWWSSSSWWWWSSSSWW
 </script>
@@ -73,40 +77,43 @@ function getColor(map,c) {
 <summary>Farbtabelle</summary>
 <table>
 <tr>
-  <td>A</td>
+  <td>R</td>
+  <td>W</td>
   <td>B</td>
-  <td>C</td>
-  <td>D</td>
-  <td>E</td>
-  <td>F</td>
+  <td>G</td>
+  <td>L</td>
+  <td>P</td>
 </tr>
 <tr>
 <td>
-  <input type="color" id="colorA" value="#ff0000">
+  <input type="color" id="colorR" value="#ff0000">
 </td>
 <td>
-  <input type="color" id="colorB" value="#00ff00">
+  <input type="color" id="colorW" value="#ffffff">
 </td>
 <td>
-<input type="color" id="colorC" value="#0000ff">
+<input type="color" id="colorB" value="#0000ff">
 </td>
 <td>
-<input type="color" id="colorD" value="#ffffff">
+<input type="color" id="colorG" value="#00ff00">
 </td>
 <td>
-<input type="color" id="colorE" value="#000000">
+<input type="color" id="colorL" value="#CCA9DD">
 </td>
 <td>
-<input type="color" id="colorF" value="#ffff00">
+<input type="color" id="colorP" value="#FC0FC0">
 </td>
 </tr>
 </table>
 </details>
-<textarea name="encoding" id="encoding" >AAAAAAADAAADDDAAADAAAAAAA</textarea>
-<button onClick="displayImage()">Anzeigen</button>
-<div id="answer"> </div>
+<textarea name="encoding" id="encoding" >RRRRRRRWRRRWWWRRRWRRRRRRR</textarea>
+<small>Darstellung des Bildes</small>
+<button onClick="displayImage()">Aktualisieren</button>
+<div class="container">
 <canvas id="myCanvas" width="400" height="200" style="border:1px solid black;">
 </canvas>
+</div>
+<article id="answer">  </article>
 </main>
 </body>
 </html>
